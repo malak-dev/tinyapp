@@ -30,7 +30,16 @@ app.get("/urls/new", (req, res) => {
 });
 app.post("/urls", (req, res) => {
   console.log(generateRandomString());
-  res.send("Ok");
+  // let templateVar = {
+  //   shortURL: generateRandomString(),
+  //   longURL: req.body.longURL
+  // };
+  console.log(templateVar);
+  urlDatabase["b2xVn2"] = generateRandomString();
+  urlDatabase["9sm5xK"] = req.body.longURL;
+
+  console.log(urlDatabase);
+  res.send("/");
 });
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase };
