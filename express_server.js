@@ -51,6 +51,10 @@ app.get("/urls/:shortURL", (req, res) => {
   console.log(req.params)
   res.render("urls_show", templateVars);
 });
+app.post('/urls/:shortURL/delete', (req, res) => {
+  delete urlDatabase[req.params.shortURL];
+  res.redirect('/urls');
+})
 
 
 app.listen(PORT, () => {
