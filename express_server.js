@@ -31,10 +31,9 @@ app.get("/urls/new", (req, res) => {
 app.post("/urls", (req, res) => {
   console.log(generateRandomString());
   let id = generateRandomString()
-
   urlDatabase[id] = req.body.longURL;
   console.log(urlDatabase);
-  res.send("ok");
+  res.redirect('/urls');
 });
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase };
