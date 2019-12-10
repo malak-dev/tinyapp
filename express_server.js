@@ -30,16 +30,11 @@ app.get("/urls/new", (req, res) => {
 });
 app.post("/urls", (req, res) => {
   console.log(generateRandomString());
-  // let templateVar = {
-  //   shortURL: generateRandomString(),
-  //   longURL: req.body.longURL
-  // };
-  console.log(templateVar);
-  urlDatabase["b2xVn2"] = generateRandomString();
-  urlDatabase["9sm5xK"] = req.body.longURL;
+  let id = generateRandomString()
 
+  urlDatabase[id] = req.body.longURL;
   console.log(urlDatabase);
-  res.send("/");
+  res.send("ok");
 });
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase };
@@ -50,6 +45,10 @@ app.get("/urls/:shortURL", (req, res) => {
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL]
   };
+  app.get("/u/:shortURL", (req, res) => {
+    const longURL = urlDatabase[req.params.shortURL]
+    res.redirect(longURL);
+  });
   console.log(req.params)
   res.render("urls_show", templateVars);
 });
