@@ -9,6 +9,18 @@
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
+        <form method="POST" action='/login'>
+          <input type="text" placeholder="username" name="username" style="position: absolute; right: 70;">
+          <% if(!username){ %>
+          <button type=" submit" style="position: absolute; right: 10;">login</button>
+        </form>
+        <% } else{ %>
+        <form method="POST" action='/logout'>
+          <p style="position: absolute; right: 300;"> logged in: <%=username%></p>
+          <button type="submit" style="position: absolute; right: 10;">logout</button>
+          </h1>
+          <% } %>
+        </form>
       </div>
     </div>
   </nav>
