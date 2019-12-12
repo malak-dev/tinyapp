@@ -6,6 +6,7 @@ app.use(cookieParser())
 const PORT = 8080;
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
+const bcrypt = require('bcrypt');
 app.set("view engine", "ejs");
 
 const users = {
@@ -90,8 +91,8 @@ app.get("/urls/:shortURL", (req, res) => {
 app.get("/u/:shortURL", (req, res) => {
 
   const templateVars = {
-    longURL:Object.keys(urlDatabase),
-   // user: users[req.cookies['user_id']]
+    longURL: urlDatabase[req.params.shortURL],
+    user: users[req.cookies['user_id']]
   }
   res.redirect(templateVars);
 });
@@ -130,7 +131,7 @@ app.post('/register', (req, res) => {
   const user = {
     id: id,
     email: req.body.email,
-    password: req.body.password
+    password: bcrypt.hashSync(req.body.password,10)
   }
   res.cookie('user_id', id)
   if (!req.body.email || !req.body.password) {
