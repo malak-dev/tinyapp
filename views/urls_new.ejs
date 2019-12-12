@@ -17,6 +17,7 @@
 
   <main style="margin: 1em;">
     <h3>Create TinyURL</h3>
+    <% if (user) { %>
     <form class="form-inline" action="/urls" method="POST">
       <div class="form-group mb-2">
         <label for="longURL">Enter a URL:</label>
@@ -24,6 +25,9 @@
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>
     </form>
+    <% } else { %>
+    <a class="nav-item nav-link" href="/login">Login</a>
+    <% } %>
   </main>
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
