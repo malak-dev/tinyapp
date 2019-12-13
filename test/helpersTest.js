@@ -15,17 +15,17 @@ const testUsers = {
   }
 };
 
-describe('getUserByEmail', function () {
-  it('should return a user with valid email', function () {
-    const user = getUserByEmail("user@example.com", testUsers)
+describe('getUserByEmail', function() {
+  it('should return a user with valid email', function() {
+    const user = getUserByEmail("user@example.com", testUsers);
     const expectedOutput = "user@example.com";
     assert.strictEqual(user.email, expectedOutput);
 
   });
 });
-describe('getUserByEmail', function () {
-  it('should return a user with valid email', function () {
-    const user = getUserByEmail("user@example.c", testUsers)
+describe('getUserByEmail', function() {
+  it('should return a user with valid email', function() {
+    const user = getUserByEmail("user@example.c", testUsers);
     const expectedOutput = null;
     assert.equal(user, expectedOutput);
 
