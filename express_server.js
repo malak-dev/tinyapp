@@ -160,7 +160,7 @@ app.post('/login', (req, res) => {
   let user = findUser(req.body.email)
   console.log(user);
   if (user) {
-    if (user.password === req.body.password) {
+    if(bcrypt.compareSync(user.password ,req.body.password)){
       res.cookie('user_id', user.id)
       res.redirect('/urls')
     }
@@ -169,7 +169,7 @@ app.post('/login', (req, res) => {
     res.send("validate your email or your password");
     return
   }
-  res.redirect('/register')
+  res.redirect('/urls')
 })
 app.post('/logout', (req, res) => {
   res.clearCookie('user_id')
