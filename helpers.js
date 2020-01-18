@@ -6,6 +6,7 @@ const getUserByEmail = function (email, users) {
     }
   }
 };
+
 const generateRandomString = function () {
   let firstPart = (Math.random() * 46656) | 0;
   let secondPart = (Math.random() * 46656) | 0;
@@ -18,13 +19,13 @@ const urlDatabase = {
   sm5xK: { longURL: 'http://www.google.com', userID: generateRandomString() },
 };
 const urlsForUser = function (id) {
-  const arr = {};
+  const obj = {};
   for (const userId in urlDatabase) {
     const currentUser = urlDatabase[userId];
     if (currentUser.userID === id) {
-      arr[userId] = currentUser;
+      obj[userId] = currentUser;
     }
-  } return arr;
+  } return obj;
 };
 module.exports = {
   getUserByEmail, generateRandomString, urlDatabase, urlsForUser,

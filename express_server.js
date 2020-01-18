@@ -29,18 +29,24 @@ const users = {
   },
 };
 
-
+app.get('/', (req, res) => {
+  res.redirect('/urls');
+});
+// add urls_new page
 app.get('/urls/new', (req, res) => {
   const templateVars = {
     user: users[req.session.userId],
   };
   res.render('urls_new', templateVars);
 });
+// add a new url
 app.post('/urls', (req, res) => {
   const id = generateRandomString();
   urlDatabase[id] = { longURL: req.body.longURL, userID: req.session.userId };
-  res.redirect('/login');
+  res.redirect('/urls');
 });
+
+// add urls page
 app.get('/urls', (req, res) => {
   const templateVars = {
     urls: urlsForUser(req.session.userId),
@@ -48,6 +54,8 @@ app.get('/urls', (req, res) => {
   };
   res.render('urls_index', templateVars);
 });
+
+
 app.get('/urls/:shortURL', (req, res) => {
   const templateVars = {
     shortURL: req.params.shortURL,
@@ -56,15 +64,14 @@ app.get('/urls/:shortURL', (req, res) => {
   };
   res.render('urls_show', templateVars);
 });
+
+
 app.get('/u/:shortURL', (req, res) => {
-  const templateVars = {
-    longURL: urlDatabase[req.params.shortURL],
-    user: users[req.session.userId],
-  };
-  res.redirect(templateVars);
+  const { longURL } = urlDatabase[req.params.shortURL];
+  res.redirect(longURL);
 });
 
-
+// delete the url
 app.post('/urls/:shortURL/delete', (req, res) => {
   if (req.session.userId === urlDatabase[req.params.shortURL].userID) {
     delete urlDatabase[req.params.shortURL];
@@ -80,15 +87,16 @@ app.post('/urls/:shortURL', (req, res) => {
     urlDatabase[shortURL].longURL = longURL;
     res.redirect('/urls');
   } else {
-    res.send('you can not delete this url');
+    res.send('You cannot edit this URL');
   }
 });
-
+// add register page
 app.get('/register', (req, res) => {
   const templateVars = { user: null };
 
   res.render('register', templateVars);
 });
+// check if the user is in the database
 app.post('/register', (req, res) => {
   const id = generateRandomString();
   const user = {
@@ -111,10 +119,13 @@ app.post('/register', (req, res) => {
   }
   users[id] = user;
 });
+// login page
+
 app.get('/login', (req, res) => {
   const templateVars = { user: users[req.session.userId] };
   res.render('login', templateVars);
 });
+// check if the user is registered or not
 app.post('/login', (req, res) => {
   const user = getUserByEmail(req.body.email, users);
   if (user) {
@@ -123,16 +134,19 @@ app.post('/login', (req, res) => {
       res.redirect('/urls');
     }
   } else {
-    res.status(400);
-    res.send('validate your email or your password');
+    res.status(400).send('you have to register');
     return;
   }
-  res.redirect('/urls');
+  res.send('Error,check your email or your password ');
 });
+
+// logout and redirect to urls page
 app.post('/logout', (req, res) => {
   delete req.session.userId;
   res.redirect('/urls');
 });
+
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
