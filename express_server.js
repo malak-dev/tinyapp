@@ -32,6 +32,8 @@ const users = {
 app.get('/', (req, res) => {
   res.redirect('/urls');
 });
+
+
 // add urls_new page
 app.get('/urls/new', (req, res) => {
   const templateVars = {
@@ -39,6 +41,8 @@ app.get('/urls/new', (req, res) => {
   };
   res.render('urls_new', templateVars);
 });
+
+
 // add a new url
 app.post('/urls', (req, res) => {
   const id = generateRandomString();
@@ -55,14 +59,19 @@ app.get('/urls', (req, res) => {
   res.render('urls_index', templateVars);
 });
 
-
+// update the url
 app.get('/urls/:shortURL', (req, res) => {
-  const templateVars = {
-    shortURL: req.params.shortURL,
-    longURL: urlDatabase[req.params.shortURL].longURL,
-    user: users[req.session.userId],
-  };
-  res.render('urls_show', templateVars);
+  if (urlDatabase[req.params.shortURL]
+    && req.session.userId === urlDatabase[req.params.shortURL].userID) {
+    const templateVars = {
+      shortURL: req.params.shortURL,
+      longURL: urlDatabase[req.params.shortURL].longURL,
+      user: users[req.session.userId],
+    };
+    res.render('urls_show', templateVars);
+  } else {
+    res.send('you have to login');
+  }
 });
 
 
@@ -80,6 +89,8 @@ app.post('/urls/:shortURL/delete', (req, res) => {
     res.send('you can not delete this url');
   }
 });
+
+
 app.post('/urls/:shortURL', (req, res) => {
   if (req.session.userId === urlDatabase[req.params.shortURL].userID) {
     const { shortURL } = req.params;
@@ -90,12 +101,16 @@ app.post('/urls/:shortURL', (req, res) => {
     res.send('You cannot edit this URL');
   }
 });
+
+
 // add register page
 app.get('/register', (req, res) => {
   const templateVars = { user: null };
 
   res.render('register', templateVars);
 });
+
+
 // check if the user is in the database
 app.post('/register', (req, res) => {
   const id = generateRandomString();
@@ -119,12 +134,15 @@ app.post('/register', (req, res) => {
   }
   users[id] = user;
 });
-// login page
 
+
+// login page
 app.get('/login', (req, res) => {
   const templateVars = { user: users[req.session.userId] };
   res.render('login', templateVars);
 });
+
+
 // check if the user is registered or not
 app.post('/login', (req, res) => {
   const user = getUserByEmail(req.body.email, users);
